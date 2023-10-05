@@ -9,13 +9,15 @@ import { collection, getDocs } from 'firebase/firestore';
 
 // Your web app's Firebase configuration
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+const API = process.env.API;
+const ID = process.env.ID;
 const firebaseConfig = {
-  apiKey: "AIzaSyBykGQBcSX1y-VumggtDWKPSe5-o8XUduM",
+  apiKey: 'AIzaSyBykGQBcSX1y-VumggtDWKPSe5-o8XUduM',
   authDomain: "chatapp-dhz.firebaseapp.com",
   projectId: "chatapp-dhz",
   storageBucket: "chatapp-dhz.appspot.com",
   messagingSenderId: "778040592514",
-  appId: "1:778040592514:web:9e2ee575ef201bcfa6cc9b",
+  appId: '1:778040592514:web:9e2ee575ef201bcfa6cc9b',
   measurementId: "G-5HKFL2CFXN"
 };
 

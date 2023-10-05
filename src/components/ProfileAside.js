@@ -1,9 +1,10 @@
 import React from 'react';
+import '../styles/profile.modules.css';
 
 export default function ProfileAside() {
     return (
-        <div>
+        <aside>
             <h1>ProfileAside</h1>
-        </div>
+        </aside>
     );
 }
