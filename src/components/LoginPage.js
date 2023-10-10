@@ -1,5 +1,5 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, Form } from "react-router-dom";
 
 export default function LoginPage({
   handleSubmit,
@@ -10,7 +10,7 @@ export default function LoginPage({
   password,
 }) {
   return (
-    <div>
+    <div id="login">
       {error && (
         <div>
           <p>Incorrect email or password</p>
@@ -19,8 +19,8 @@ export default function LoginPage({
           </Link>
         </div>
       )}
-      Login
-      <form onSubmit={handleSubmit}>
+      <h1>Login</h1>
+      <Form onSubmit={handleSubmit}>
         <label>Email</label>
         <input
           onChange={(e) => handleChange(e)}
@@ -35,11 +35,13 @@ export default function LoginPage({
           name="password"
           value={password}
         />
-        <input type="submit" value="Login" />
-        <Link to="/signup">
-          <button>Sign Up</button>
-        </Link>
-      </form>
+        <div id="buttons">
+          <button type="submit" value="Login">
+            Login
+          </button>
+          <Link to="/signup">Sign Up</Link>
+        </div>
+      </Form>
     </div>
   );
 }

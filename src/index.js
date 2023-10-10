@@ -7,6 +7,9 @@ import ErrorPage from './components/ErrorPage';
 import Login from './routes/login';
 import SignUp from './routes/signup';
 import Home from './routes/home';
+import store from './store/store';
+import { Provider } from 'react-redux';
+import LoadingPage from './components/LoadingPage';
 
 const router = createBrowserRouter([
   {
@@ -15,8 +18,12 @@ const router = createBrowserRouter([
     errorElement: <ErrorPage />,
   },
   {
+    path: '/events',
+    element: <LoadingPage />,
+  },
+  {
     path: "/login",
-    element: <Login />,
+    element: <Login/>,
   },
   {
     path: '/signup',
@@ -25,12 +32,18 @@ const router = createBrowserRouter([
   {
     path: '/home',
     element: <Home />
+  },
+  {
+    path: '/home/messages/*',
+    element: <Home />,
   }
 ]);
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <RouterProvider router={router} />
+    <Provider store={store}>
+      <RouterProvider router={router} />
+    </Provider>
   </React.StrictMode>
 );

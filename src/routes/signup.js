@@ -1,7 +1,7 @@
 import React, {useState} from "react";
 import SignUpPage from "../components/SignUpPage";
 import { db } from "../data/database";
-import { collection, getCountFromServer } from "firebase/firestore";
+import { collection} from "firebase/firestore";
 import { doc, setDoc } from "firebase/firestore";
 
 export default function SignUp() {
@@ -14,7 +14,7 @@ export default function SignUp() {
     id: generateNewId(),
     name: "",
     email: "",
-    password: "",
+    password: ""
   });
 
   const users = collection(db, "users");
@@ -33,10 +33,12 @@ export default function SignUp() {
     }
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setIsLoading(true);
-    setDoc(doc(db, 'users', newUser.name.toLowerCase().split(' ').join('')), newUser);
+    if(newUser.name !== "" || newUser.email !== ''){
+      await setDoc(doc(db, 'users', newUser.name.toLowerCase().split(' ').join('')), newUser);
+    }
     setNewUser({
       id: generateNewId(),
       name: "",
