@@ -19,7 +19,7 @@ export default function Signup() {
       displayName: e.target[0].value,
       email: e.target[1].value,
       password: e.target[2].value,
-      file: e.target[3].files[0]
+      file: e.target[3].files[0],
     }));
     console.log(e.target[2].value);
     if(newUser){
@@ -27,12 +27,13 @@ export default function Signup() {
         .then(async (userCredential) => {
           await updateProfile(userCredential.user, {
             displayName: newUser.displayName,
-            password: newUser.password
+            password: newUser.password,
           });
           await setDoc(doc(db, "users", userCredential.user.uid), {
             name: newUser.displayName,
             email: newUser.email,
-            password: newUser.password
+            password: newUser.password,
+            uid: userCredential.user.uid
           });
           await setDoc(doc(db, "messages", userCredential.user.uid), {});
           dispatch(updateUser({uid: userCredential.user.uid}))

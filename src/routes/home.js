@@ -6,15 +6,15 @@ import { currentUserSelector } from '../store/User/currentUserSlice';
 import { useNavigate } from 'react-router';
 import { db } from '../firebase';
 import { collection, query, where, getDocs} from 'firebase/firestore';
+import { auth } from '../firebase';
 
 export default function Home() {
-    const currentUser = useSelector(currentUserSelector);
+    const currentUser = useSelector(currentUserSelector); //Gets current user's info from state
     const navigate = useNavigate();
-    const [searchName, setSearchName] = useState('');
-    const [results, setResults] = useState([]);
+    const [searchName, setSearchName] = useState(''); //Local state to search a name
+    const [results, setResults] = useState([]); //Local state to store results
     useEffect(() => {
-        console.log(currentUser);
-        if(!currentUser.email || !currentUser.uid)
+        if(!currentUser.email || !currentUser.uid || auth.currentUser === null ) //Checks if a user is logged in to redirect to login screen
         {
             navigate('/login');
         }
@@ -29,7 +29,7 @@ export default function Home() {
     
     const handleSubmit = async (e) => {
         e.preventDefault();
-        setSearchName(e.target[0].value);
+        // setSearchName(e.target[0].value);
         console.log(searchName);
         if(searchName)
         {
@@ -44,9 +44,14 @@ export default function Home() {
             console.log(results);
         }
     }
+
+    const handleChange = (e) => {
+        e.preventDefault();
+        setSearchName(e.target.value);
+    }
     return (
         <>
-            <HomePage handleSubmit={handleSubmit} results={results}/>
+            <HomePage handleSubmit={handleSubmit} results={results} handleChange={handleChange}/>
         </>
     );
 }

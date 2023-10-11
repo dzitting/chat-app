@@ -1,18 +1,21 @@
-import React from "react";
+import React, { useState } from "react";
+import { useDispatch } from "react-redux";
+import { setCurrentChatUser } from "../store/Chat/currentChatUserSlice";
 
-export default function User({user}) {
-  console.log(user);
+export default function User({key, user}) {
+  const dispatch = useDispatch();
   const startConversation = (e) => {
     e.preventDefault();
-    console.log(user);
+    dispatch(setCurrentChatUser(user));
   }
+  
   return (
-    <div className="user" onClick={(e) => startConversation(e)}>
+    <div key={key} className="user" onClick={(e) => startConversation(e)}>
       <figure>
         <img
           width="32px"
           height="32px"
-          src="https://img.icons8.com/windows/32/user-male-circle.png"
+          src={user.photoURL || "https://img.icons8.com/windows/32/user-male-circle.png"}
           alt="user-male-circle"
         />
       </figure>

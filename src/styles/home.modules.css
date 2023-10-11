@@ -28,12 +28,29 @@ div.chat {
     box-shadow: inset 2px 2px 5px #000;
     background-color: #00000025;
     padding: 0 1rem;
+    overflow-y: scroll;
+
 }
 
 div.message {
     display: flex;
+    align-items: start;
+    justify-content: center;
+    flex-direction: column;
+}
+
+div.message__container {
+    display: flex;
     align-items: center;
     justify-content: start;
+}
+
+.message span {
+    margin: 0;
+    padding: 0;
+    font-size: 0.8rem;
+    width: 100%;
+    text-align: center
 }
 
 .message__text p, .message-me__text p {
@@ -54,6 +71,7 @@ div.message-me {
     display: flex;
     align-items: center;
     justify-content: end;
+    flex-direction: row-reverse;
 }
 
 .messages__form {
