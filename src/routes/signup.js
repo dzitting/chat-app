@@ -1,60 +1,59 @@
 import React, {useState} from "react";
-import SignUpPage from "../components/SignUpPage";
-import { db } from "../data/database";
-import { collection} from "firebase/firestore";
-import { doc, setDoc } from "firebase/firestore";
+import SignUpPage from '../pages/SignUpPage';
+import '../styles/login.modules.css';
+import { createUserWithEmailAndPassword , updateProfile} from "firebase/auth";
+import { auth, db } from '../firebase';
+import {useNavigate } from 'react-router-dom'
+import { useSelector, useDispatch } from 'react-redux';
+import { createUser, currentUserSelector, updateUser } from "../store/User/currentUserSlice";
+import { doc, setDoc } from "firebase/firestore"; 
 
-export default function SignUp() {
-    const generateNewId = () => {
-        const num = Math.floor(Math.random() * 1000);
-        return num;
-    }
-    const [isLoading, setIsLoading] = useState(false);
-    const [newUser, setNewUser] = useState({
-    id: generateNewId(),
-    name: "",
-    email: "",
-    password: ""
-  });
+export default function Signup() {
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const newUser = useSelector(currentUserSelector);
 
-  const users = collection(db, "users");
-
-
-  const handleChange = async (e) => {
+  const handleSignUp = async (e) => {
     e.preventDefault();
-    if (e.target.name === "name") {
-      setNewUser({ ...newUser, name: e.target.value });
+    dispatch(createUser({
+      displayName: e.target[0].value,
+      email: e.target[1].value,
+      password: e.target[2].value,
+      file: e.target[3].files[0]
+    }));
+    console.log(e.target[2].value);
+    if(newUser){
+      await createUserWithEmailAndPassword(auth, newUser.email, newUser.password)
+        .then(async (userCredential) => {
+          await updateProfile(userCredential.user, {
+            displayName: newUser.displayName,
+            password: newUser.password
+          });
+          await setDoc(doc(db, "users", userCredential.user.uid), {
+            name: newUser.displayName,
+            email: newUser.email,
+            password: newUser.password
+          });
+          await setDoc(doc(db, "messages", userCredential.user.uid), {});
+          dispatch(updateUser({uid: userCredential.user.uid}))
+          navigate('/login');
+        })
+        .catch((error) => {
+          const errorCode = error.code;
+          const errorMessage = error.message;
+          console.log(errorCode, errorMessage);
+        });
     }
-    if (e.target.name === "email") {
-      setNewUser({ ...newUser, email: e.target.value });
-    }
-    if (e.target.name === "password") {
-      setNewUser({ ...newUser, password: e.target.value });
-    }
-  };
+  }
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setIsLoading(true);
-    if(newUser.name !== "" || newUser.email !== ''){
-      await setDoc(doc(db, 'users', newUser.name.toLowerCase().split(' ').join('')), newUser);
-    }
-    setNewUser({
-      id: generateNewId(),
-      name: "",
-      email: "",
-      password: "",
-    });
-    window.location.href = '/login';
-  };
-
+  // createUserWithEmailAndPassword(auth, email, password)
+  // .then((userCredential) => {
+  //   const user = userCredential.user;
+  // }).catch((error) => {
+  //   const errorCode = error.code;
+  //   const errorMessage = error.message;
+  // })
   return (
-    <SignUpPage
-      newUser={newUser}
-      users={users}
-      handleChange={handleChange}
-      handleSubmit={handleSubmit}
-      isLoading={isLoading}
-    />
+    <SignUpPage handleSignUp={handleSignUp} />
   );
 }

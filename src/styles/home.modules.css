@@ -1,0 +1,152 @@
+div.home-container {
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+}
+
+div.home-container__sidebar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 100%;
+    width: 100%;
+}
+
+div.sidebar {
+    width: 20vw;
+    height: 95%;
+}
+
+div.chat {
+    width: 55vw;
+    height: 95%;
+}
+
+#msg-box {
+    width: 100%;
+    height: 70%;
+    box-shadow: inset 2px 2px 5px #000;
+    background-color: #00000025;
+    padding: 0 1rem;
+}
+
+div.message {
+    display: flex;
+    align-items: center;
+    justify-content: start;
+}
+
+.message__text p, .message-me__text p {
+    background-color: white;
+    width: max-content;
+    height: max-content;
+    padding: 0.5rem;
+    border-radius: 8px 8px 8px 2px;
+}
+
+.message-me__text p {
+    background-color: rgb(59, 77, 112);
+    color: white;
+    border-radius: 8px 8px 2px 8px;
+}
+
+div.message-me {
+    display: flex;
+    align-items: center;
+    justify-content: end;
+}
+
+.messages__form {
+    width: 100%;
+    height: 20%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+#text {
+    width: 80%;
+    height: 100%;
+}
+
+#send {
+    width: 20%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: end;
+    gap: 1rem;
+}
+
+#send label {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+}
+
+#send img {
+    width: 48px;
+    height: 48px;
+    object-fit: cover;
+}
+
+div.conversations {
+    width: 25vw;
+    height: 95%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+div.conversations__form {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-around;
+    width: 100%;
+}
+
+div.conversations input {
+    width: 80%;
+    padding: 0.5rem;
+    margin: 0;
+}
+
+div.user {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 90%;
+    margin-bottom: 1rem;
+}
+
+div.user:hover {
+    filter: drop-shadow(1px 1px 1px #3c3c3c);
+    cursor: pointer;
+    transition: smooth;
+}
+
+div.user figure {
+    overflow: hidden;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+div.user figure img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+div.user__text{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    width: 100%;
+    margin-left: 1rem;
+}

@@ -3,14 +3,13 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './app/App';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
-import ErrorPage from './components/ErrorPage';
+import ErrorPage from './pages/ErrorPage';
 import Login from './routes/login';
-import SignUp from './routes/signup';
+import Signup from './routes/signup';
 import Home from './routes/home';
-import store from './store/store';
+import { app } from './firebase';
 import { Provider } from 'react-redux';
-import LoadingPage from './components/LoadingPage';
-
+import {store} from './store/store';
 const router = createBrowserRouter([
   {
     path: '/',
@@ -18,24 +17,16 @@ const router = createBrowserRouter([
     errorElement: <ErrorPage />,
   },
   {
-    path: '/events',
-    element: <LoadingPage />,
-  },
-  {
-    path: "/login",
-    element: <Login/>,
+    path: '/login',
+    element: <Login />,
   },
   {
     path: '/signup',
-    element: <SignUp />
+    element: <Signup />,
   },
   {
     path: '/home',
     element: <Home />
-  },
-  {
-    path: '/home/messages/*',
-    element: <Home />,
   }
 ]);
 
@@ -44,6 +35,6 @@ root.render(
   <React.StrictMode>
     <Provider store={store}>
       <RouterProvider router={router} />
-    </Provider>
+      </Provider>
   </React.StrictMode>
 );
