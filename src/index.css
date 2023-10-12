@@ -10,8 +10,8 @@
 figure {
   display: flex; 
   align-items: center; 
-  width: 64px;
-  height: 64px;
+  width: 128px;
+  height: 128px;
   justify-content: center;
   overflow: hidden;
 }

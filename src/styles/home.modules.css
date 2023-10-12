@@ -130,6 +130,7 @@ div.conversations {
 }
 
 #conversations-results {
+    width: 100%;
     overflow-y: scroll;
 }
 
@@ -185,7 +186,7 @@ div.user__text{
     margin-left: 1rem;
 }
 
-@media only screen and (max-width: 768px) {
+@media screen and (max-width: 720px) {
     div.home-container__sidebar {
         display: flex;
         flex-direction: column-reverse;
