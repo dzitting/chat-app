@@ -4,6 +4,12 @@ div.home-container {
     overflow: hidden;
 }
 
+figure img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
 div.home-container__sidebar {
     display: flex;
     justify-content: space-between;
@@ -15,6 +21,12 @@ div.home-container__sidebar {
 div.sidebar {
     width: 20vw;
     height: 95%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.sidebar li {
+    list-style: none;
 }
 
 div.chat {
@@ -117,6 +129,10 @@ div.conversations {
     align-items: center;
 }
 
+#conversations-results {
+    overflow-y: scroll;
+}
+
 div.conversations__form {
     display: flex;
     flex-direction: row;
@@ -167,4 +183,36 @@ div.user__text{
     align-items: flex-start;
     width: 100%;
     margin-left: 1rem;
+}
+
+@media only screen and (max-width: 768px) {
+    div.home-container__sidebar {
+        display: flex;
+        flex-direction: column-reverse;
+        overflow: scroll;
+        justify-content: space-between;
+        align-items: space-between;
+    }
+
+    div.chat, .sidebar, .conversations {
+        width: 90%;
+    }
+
+    div.chat {
+        height: 100vh;
+    }
+
+    #msg-box {
+        min-height: 100%;
+    }
+
+    div.sidebar {
+        height: 100vh;
+        margin-top: 10rem;
+        margin-bottom: 2rem;
+    }
+
+    div.conversations {
+        height: 50%;
+    }
 }

@@ -7,6 +7,15 @@
   box-sizing: border-box;
 }
 
+figure {
+  display: flex; 
+  align-items: center; 
+  width: 64px;
+  height: 64px;
+  justify-content: center;
+  overflow: hidden;
+}
+
 p {
   font-family: 'Sofia Sans Condensed', sans-serif;
 }
@@ -75,7 +84,7 @@ input:active, input:focus {
   /* Firefox */
   * {
     scrollbar-width: thin;
-    scrollbar-color: #3589fd #c7c7c7;
+    scrollbar-color: #3599cf #c7c7c7;
   }
 
   /* Chrome, Edge, and Safari */
@@ -88,7 +97,14 @@ input:active, input:focus {
   }
 
   *::-webkit-scrollbar-thumb {
-    background-color: #757ef5;
+    background-color: #3599cf;
     border-radius: 10px;
     border: 2px ridge #8682a1;
+  }
+
+  @media screen and (max-width: 720px) {
+    *::-webkit-scrollbar {
+      display: none;
+    }
+    
   }

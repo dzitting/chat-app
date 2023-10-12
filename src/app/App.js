@@ -12,7 +12,12 @@ function App() {
         <li>React</li>
         <li>React Router</li>
         <li>Firebase/Firestore</li>
+        <li>Redux</li>
       </ul>
+      <h2>Usage Tips:</h2>
+      <p>You can login as a premade user, or sign up with your own information. To use the premade account, simply go to login and use the following credentials:</p>
+      <p>Username: <em>jstein@mail.com</em></p>
+      <p>Password: <em>123stein</em></p>
       <h3>Thanks for checking it out!</h3>
       <Link to={"/login"}>Click Here to Login</Link>
     </div>

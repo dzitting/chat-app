@@ -1,0 +1,11 @@
+.left {
+    text-align: left;
+}
+
+.navbar-help__links ul {
+    display: flex;
+    list-style: none;
+    gap: 1rem;
+    justify-content: center;
+    align-items: center;
+}

@@ -1,12 +1,16 @@
 import React from "react";
+import { useSelector } from "react-redux";
+import { currentChatUserSelector } from "../store/Chat/currentChatUserSlice";
 
 export default function Message({ message }) {
+  const user = useSelector(currentChatUserSelector);
+  console.log(user);
   return (
     <div className="message">
       <div className="message__container">
         <figure>
           <img
-            src="https://img.icons8.com/windows/48/user-male-circle.png"
+            src={user.photoURL || "https://img.icons8.com/windows/48/user-male-circle.png"}
             alt="profile image in message box"
           />
         </figure>

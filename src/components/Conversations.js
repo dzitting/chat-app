@@ -33,17 +33,17 @@ export default function Conversations({ handleSubmit, results, handleChange }) {
       {
         console.log(msgArr);
         msgArr.map((doc) => {
-          console.log(doc);
           const q2 = query(
             collection(db, "users"),
             where("uid", "==", doc),
           );
           getDocs(q2).then((querySnapshot) => {
             querySnapshot.forEach((doc) => {
-              if(currentMessages.includes(doc.data())) {
+              if(currentMessages.includes(doc.data().displayName)) {
                 return;
-              }
+              } else if(!currentMessages.includes(doc.data())) {
               setCurrentMessages((prev) => [...prev, doc.data()]);
+              }
             });
           });
         })
@@ -69,6 +69,7 @@ export default function Conversations({ handleSubmit, results, handleChange }) {
           />
         </div>
       </form>
+      <div id='conversations-results'>
       {currentMessages
         ? currentMessages.map((message) => (
             <User key={message.uid} user={message} />
@@ -76,6 +77,7 @@ export default function Conversations({ handleSubmit, results, handleChange }) {
         : null}
       {results &&
         results.map((result) => <User key={result.id} user={result} />)}
+      </div>
     </div>
   );
 }

@@ -25,14 +25,20 @@ export default function Chat() {
     const messageBoxRef = useRef(null); // Create a ref for the message box element
 
   useEffect(() => {
-    if (user && loggedInUser) {
-      const q = query(collection(db, "messages", loggedInUser.uid, "chats"));
-      onSnapshot(q, (querySnapshot) => {
-        const sortedMessages = querySnapshot.docs
-          .map((doc) => doc.data())
-          .sort((a, b) => a.timestamp - b.timestamp); // Sort messages based on timestamp
-        setMessages(sortedMessages);
-      });
+    try{
+      if (user && loggedInUser) {
+        const q = query(collection(db, "messages", loggedInUser.uid, "chats"));
+        onSnapshot(q, (querySnapshot) => {
+          const sortedMessages = querySnapshot.docs
+            .map((doc) => doc.data())
+            .filter((message) => message.to === loggedInUser.uid && message.uid === user.uid || message.to === user.uid && message.uid === loggedInUser.uid)
+            .sort((a, b) => a.timestamp - b.timestamp);
+          setMessages(sortedMessages);
+        });
+      }
+    } catch(error) {
+      console.log(error);
+      alert('It looks like you were logged out!');
     }
   }, [user, loggedInUser]);
 
@@ -53,6 +59,9 @@ export default function Chat() {
       to: user.uid,
     };
 
+    console.log(e.target[1].files[0]);
+    console.log(messages);
+
     await addDoc(collection(db, "messages", user.uid, "chats"), data);
     await addDoc(collection(db, "messages", loggedInUser.uid, "chats"), data);
 
@@ -62,13 +71,13 @@ export default function Chat() {
   return (
     <div className="chat">
       <h1>Chat with {user ? user.name : "a Friend"}</h1>
-      <div id="msg-box" >
+      <div id="msg-box" ref={messageBoxRef} >
         {messages &&
           messages.map((message) =>
             message.uid === user.uid ? (
-              <Message message={message} ref={messageBoxRef} />
-            ) : (
-              <MessageMe message={message} ref={messageBoxRef}/>
+              <Message message={message}  />
+            ) : message.uid === loggedInUser.uid && (
+              <MessageMe message={message} />
             )
           )}
       </div>
@@ -77,12 +86,12 @@ export default function Chat() {
           <input id="text" type="text" placeholder="Enter message..." />
           <input id="file" type="file" style={{ display: "none" }} />
           <div style={{ width: 10 }} id="send">
-            <label htmlFor="file">
+            {/* <label htmlFor="file">
               <img
                 src="https://img.icons8.com/windows/32/file-upload.png"
                 alt="upload icon"
               />
-            </label>
+            </label> */}
             <button>Send</button>
           </div>
         </div>

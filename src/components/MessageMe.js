@@ -1,12 +1,15 @@
 import React from "react";
+import { useSelector } from "react-redux";
+import { currentUserSelector } from "../store/User/currentUserSlice";
 
 export default function MessageMe({ message }) {
+  const currentUser = useSelector(currentUserSelector);
   return (
     <>
       <div className="message-me">
-        <figure>
+        <figure >
           <img
-            src="https://img.icons8.com/windows/48/user-male-circle.png"
+            src={currentUser.photoURL ||"https://img.icons8.com/windows/48/user-male-circle.png"}
             alt="profile image in message box"
           />
         </figure>
