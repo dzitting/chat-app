@@ -30,7 +30,6 @@ export default function Login() {
     signInWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
         // Signed in
-        console.log(userCredential)
         const user = userCredential.user;
         const token = userCredential._tokenResponse.registered;
         const userObj = {

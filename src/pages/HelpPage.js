@@ -1,9 +1,8 @@
 import React from "react";
 import "../styles/help.modules.css";
 import { Link } from "react-router-dom";
-import { SignOutClean } from "../utils/signOut";
 
-export default function HelpPage() {
+export default function HelpPage({signOutClean}) {
   return (
     <div atyle={{ display: "flex", flexDirection: "column", justifyContent: 'center', alignItems: 'center' }}>
       <div className="navbar-help">
@@ -13,7 +12,7 @@ export default function HelpPage() {
                     <Link to="/home">Home</Link>
                 </li>
                 <li>
-                    <Link to='/login' onClick={() => SignOutClean()}>Sign Out</Link>
+                    <Link to='/login' onClick={() => signOutClean()}>Sign Out</Link>
                 </li>
             </ul>
         </div>

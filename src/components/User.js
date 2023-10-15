@@ -14,8 +14,8 @@ export default function User({key, user}) {
       <figure>
         <img
         style={{width: '100%', height: '100%', objectFit: 'contain'}}
-          width="32px"
-          height="32px"
+          width="64px"
+          height="64px"
           src={user.photoURL || "https://img.icons8.com/windows/32/user-male-circle.png"}
           alt="user-male-circle"
         />

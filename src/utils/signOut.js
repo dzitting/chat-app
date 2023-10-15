@@ -1,3 +1,4 @@
+import React from 'react';
 import { signOut } from "firebase/auth";
 import { auth } from "../firebase";
 import { useNavigate } from "react-router-dom";
@@ -15,13 +16,6 @@ function SignOutClean() {
     } catch (error) {
       console.log(error);
     }
-    signOut(auth)
-      .then(() => {
-        navigate("/login");
-      })
-      .catch((error) => {
-        console.log(error);
-      });
   };
 
   export { SignOutClean };

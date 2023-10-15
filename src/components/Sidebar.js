@@ -10,7 +10,6 @@ import {
 import { setCurrentChatUser } from "../store/Chat/currentChatUserSlice";
 import { storage } from "../firebase";
 import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
-import { SignOutClean } from "../utils/signOut";
 
 export default function Sidebar() {
   const auth = getAuth();
@@ -20,18 +19,35 @@ export default function Sidebar() {
   const [progress, setProgress] = useState(null);
   const [showProgress, setShowProgress] = useState(false);
   const [editingProfileImg, setEditingProfileImg] = useState(false);
+  console.log(currentUser);
 
   useEffect(() => {
-    if(progress > 99)
-    {
+    if (progress > 99) {
       setProgress(null);
       setShowProgress(false);
     }
-  },[progress]);
+  }, [progress]);
+
+  const signOutClean = () => {
+    try {
+      dispatch(setCurrentChatUser(null));
+      dispatch(setCurrentUser(null));
+      signOut(auth)
+        .then(() => {
+          navigate("/");
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   const editImage = async (e) => {
     e.preventDefault();
     const file = e.target[0].files[0];
+    console.log(file);
     if (file) {
       const storageRef = ref(
         storage,
@@ -50,16 +66,19 @@ export default function Sidebar() {
           alert("There was an issue with uploading, please try again");
           console.log(error);
         },
-        () => {
-          getDownloadURL(uploadTask.snapshot.ref).then(async (downloadURL) => {
+        async () => {
+          const downloadURL = await getDownloadURL(uploadTask.snapshot.ref);
+          if (downloadURL) {
             await updateProfile(auth.currentUser, {
               photoURL: downloadURL,
-            })
-              .then(() => setShowProgress(false))
-              .then((downloadURL) =>
-                dispatch(updateUser({ photoURL: downloadURL }))
-              );
-          });
+            }).then(() => {
+              dispatch(updateUser({ photoURL: downloadURL }));
+              setEditingProfileImg(false);
+              setShowProgress(false);
+              setProgress(null);
+            });
+          }
+          console.log(auth.currentUser.photoURL);
         }
       );
     } else {
@@ -78,30 +97,56 @@ export default function Sidebar() {
           alt="profile"
         />
       </figure>
-      <ul style={{textAlign: 'center', display: 'flex', alignItems: 'center', justifyContent: 'center', flexDirection: 'column'}}>
+      <ul
+        style={{
+          textAlign: "center",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          flexDirection: "column",
+        }}
+      >
         <li>
-          {editingProfileImg ? (<form onSubmit={(e) => editImage(e)}>
-            <input id="file" type="file" style={{ display: "none" }} />
-            <label htmlFor="file" style={{ width: "100%", cursor: "pointer" }}>
+          {editingProfileImg ? (
+            <form onSubmit={(e) => editImage(e)}>
+              <input id="file" type="file" style={{ display: "none" }} />
+              <label
+                htmlFor="file"
+                style={{ width: "100%", cursor: "pointer" }}
+              >
+                <img
+                  src="https://cdn.iconscout.com/icon/free/png-512/free-upload-2030966-1714815.png?f=webp&w=256"
+                  width="32px"
+                  height="32px"
+                  alt="profile"
+                />
+              </label>
+              {progress < 100 && showProgress ? (
+                <progress value={progress} max="100" style={{ width: "80%" }} />
+              ) : null}
+              <button type="submit">Upload</button>
               <img
-                src="https://cdn.iconscout.com/icon/free/png-512/free-upload-2030966-1714815.png?f=webp&w=256"
+                style={{ cursor: "pointer" }}
                 width="32px"
                 height="32px"
-                alt="profile"
+                onClick={(e) => setEditingProfileImg(false)}
+                src="https://d3sxshmncs10te.cloudfront.net/icon/free/svg/1214345.svg?token=eyJhbGciOiJoczI1NiIsImtpZCI6ImRlZmF1bHQifQ__.eyJpc3MiOiJkM3N4c2htbmNzMTB0ZS5jbG91ZGZyb250Lm5ldCIsImV4cCI6MTY5NzMyODAwMCwicSI6bnVsbCwiaWF0IjoxNjk3MTMyNjI1fQ__.4fbb8e77765add4c16593a998dea59848b1679d6df85b9fdb46fbc42d99684d0"
+                alt="close editing"
               />
-            </label>
-            {progress < 100 && showProgress ? (
-              <progress value={progress} max="100" style={{ width: "80%" }} />
-            ) : null}
-            <button type="submit">Upload</button>
-            <img style={{cursor: 'pointer'}} width='32px' height='32px' onClick={(e)=>setEditingProfileImg(false)} src='https://d3sxshmncs10te.cloudfront.net/icon/free/svg/1214345.svg?token=eyJhbGciOiJoczI1NiIsImtpZCI6ImRlZmF1bHQifQ__.eyJpc3MiOiJkM3N4c2htbmNzMTB0ZS5jbG91ZGZyb250Lm5ldCIsImV4cCI6MTY5NzMyODAwMCwicSI6bnVsbCwiaWF0IjoxNjk3MTMyNjI1fQ__.4fbb8e77765add4c16593a998dea59848b1679d6df85b9fdb46fbc42d99684d0' alt='close editing' />
-          </form>):(<button onClick={(e) => setEditingProfileImg(true)}>Edit Image</button>)}
+            </form>
+          ) : (
+            <button onClick={(e) => setEditingProfileImg(true)}>
+              Edit Image
+            </button>
+          )}
         </li>
         <li>
-          <Link to='/home/help'><button>Help</button></Link>
+          <Link to="/home/help">
+            <button>Help</button>
+          </Link>
         </li>
       </ul>
-      <Link to="/login" onClick={() => SignOutClean()}>
+      <Link to="/login" onClick={() => signOutClean()}>
         Log Out
       </Link>
     </div>

@@ -10,46 +10,51 @@ export default function Conversations({ handleSubmit, results, handleChange }) {
   const currentUser = useSelector(currentUserSelector);
   const user = useSelector(currentChatUserSelector);
   const [currentMessages, setCurrentMessages] = useState([]);
-  
-  useEffect(() => {
+
+  useEffect(() => { //On component load, will call fetchMessageList function
     const fetchMessageList = async () => {
-      const q = query(
-        collection(db, "messages", currentUser.uid, "chats"),
-      );
-      const msgArr = [];
-      const UIDs = new Set();
-      const querySnapshot = await getDocs(q);
-      querySnapshot.forEach((doc) => {
-        if(!UIDs.has(doc.data().to) && !msgArr.includes(doc.data().to) && doc.data().to !== currentUser.uid) {
-          console.log(`Adding ${doc.data().to}`);
-          msgArr.push(doc.data().to);
-          UIDs.add(doc.data().to);
-        }else if(doc.data().from !== currentUser.displayName && !UIDs.has(doc.data().uid)) {
-          msgArr.push(doc.data().uid);
-          UIDs.add(doc.data().uid);
-        }
-      });
-      if(msgArr)
-      {
-        console.log(msgArr);
-        msgArr.map((doc) => {
-          const q2 = query(
-            collection(db, "users"),
-            where("uid", "==", doc),
-          );
-          getDocs(q2).then((querySnapshot) => {
-            querySnapshot.forEach((doc) => {
-              if(currentMessages.includes(doc.data().displayName)) {
-                return;
-              } else if(!currentMessages.includes(doc.data())) {
-              setCurrentMessages((prev) => [...prev, doc.data()]);
-              }
+      try { //It will try to retrieve all the messages/conversations for the current user
+        const q = query(collection(db, "messages", currentUser.uid, "chats"));
+        const msgArr = [];
+        const UIDs = new Set();
+        const querySnapshot = await getDocs(q);
+        querySnapshot.forEach((doc) => {
+          if (
+            !UIDs.has(doc.data().to) && //Checks if the message being sent to user's uid has already been added
+            !msgArr.includes(doc.data().to) &&
+            doc.data().to !== currentUser.uid
+          ) {
+            console.log(`Adding ${doc.data().to}`);
+            msgArr.push(doc.data().to);
+            UIDs.add(doc.data().to);
+          } else if (
+            doc.data().from !== currentUser.displayName &&
+            !UIDs.has(doc.data().uid)
+          ) {
+            msgArr.push(doc.data().uid);
+            UIDs.add(doc.data().uid);
+          }
+        });
+        if (msgArr) {
+          console.log(msgArr);
+          msgArr.map((doc) => {
+            const q2 = query(collection(db, "users"), where("uid", "==", doc));
+            getDocs(q2).then((querySnapshot) => {
+              querySnapshot.forEach((doc) => {
+                if (currentMessages.includes(doc.data().displayName)) {
+                  return;
+                } else if (!currentMessages.includes(doc.data())) {
+                  setCurrentMessages((prev) => [...prev, doc.data()]);
+                }
+              });
             });
           });
-        })
+        }
+      } catch (error) {
+        console.log(error);
       }
     };
-  
+
     fetchMessageList();
   }, []);
 
@@ -69,14 +74,14 @@ export default function Conversations({ handleSubmit, results, handleChange }) {
           />
         </div>
       </form>
-      <div id='conversations-results'>
-      {currentMessages
-        ? currentMessages.map((message) => (
-            <User key={message.uid} user={message} />
-          ))
-        : null}
-      {results &&
-        results.map((result) => <User key={result.id} user={result} />)}
+      <div id="conversations-results">
+        {currentMessages
+          ? currentMessages.map((message) => (
+              <User key={message.uid} user={message} />
+            ))
+          : null}
+        {results &&
+          results.map((result) => <User key={result.id} user={result} />)}
       </div>
     </div>
   );
