@@ -21,7 +21,7 @@ export default function User({key, user}) {
         />
       </figure>
       <div className="user__text">
-        <h4>{user.name}</h4>
+        <h4>{user.displayName}</h4>
         <p>{user.email}</p>
       </div>
     </div>
