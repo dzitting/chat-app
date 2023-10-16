@@ -19,7 +19,6 @@ export default function Sidebar() {
   const [progress, setProgress] = useState(null);
   const [showProgress, setShowProgress] = useState(false);
   const [editingProfileImg, setEditingProfileImg] = useState(false);
-  console.log(currentUser);
 
   useEffect(() => {
     if (progress > 99) {

@@ -70,7 +70,7 @@ export default function Chat() {
 
   return (
     <div className="chat">
-      <h1>Chat with {user ? user.name : "a Friend"}</h1>
+      <h1>Chat with {user ? user.displayName : "a Friend"}</h1>
       <div id="msg-box" ref={messageBoxRef} >
         {messages &&
           messages.map((message) =>

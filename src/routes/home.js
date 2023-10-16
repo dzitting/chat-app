@@ -35,7 +35,7 @@ export default function Home() {
         {
             const q = query(
                 collection(db, "users"),
-                where("name", "==", searchName)
+                where("displayName", "==", searchName)
             );
             const querySnapshot = await getDocs(q);
             querySnapshot.forEach((doc) => {

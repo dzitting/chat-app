@@ -1,7 +1,7 @@
 import React from "react";
 import { Form, Link } from "react-router-dom";
 
-export default function SignUpPage({ handleSignUp }) {
+export default function SignUpPage({ handleSignUp, showProgress, progress }) {
   return (
     <div className="signup-container__wrapper">
       <div className="signup-container">
@@ -37,6 +37,7 @@ export default function SignUpPage({ handleSignUp }) {
                 alt='profile'
               />
             </label>
+            {showProgress ? <progress value={progress} max='100' /> : null}
           </div>
           <button>Sign Up</button>
         </Form>
